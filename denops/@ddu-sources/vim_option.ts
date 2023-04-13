@@ -11,7 +11,7 @@ type Params = {
 }
 
 export class Source extends BaseSource<Params> {
-  override kind = "vim_variable";
+  override kind = "vim_type";
 
   override gather(args: {
     denops: Denops;
