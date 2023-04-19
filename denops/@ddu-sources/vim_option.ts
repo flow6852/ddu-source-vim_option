@@ -2,13 +2,13 @@ import {
   BaseSource,
   Item,
   SourceOptions,
-} from "https://deno.land/x/ddu_vim@v2.7.0/types.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v2.7.0/deps.ts";
+} from "https://deno.land/x/ddu_vim@v2.8.3/types.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v2.8.3/deps.ts";
 
 // type Params = Record<never, never>;
 type Params = {
-  bufnr: number
-}
+  bufnr: number;
+};
 
 export class Source extends BaseSource<Params> {
   override kind = "vim_type";
@@ -24,7 +24,9 @@ export class Source extends BaseSource<Params> {
         if (bufnr < 1) {
           bufnr = await fn.bufnr(args.denops, "%") as number;
         }
-        controller.enqueue(await getOptions(args.denops, args.sourceParams.bufnr))
+        controller.enqueue(
+          await getOptions(args.denops, args.sourceParams.bufnr),
+        );
         controller.close();
       },
     });
@@ -32,8 +34,8 @@ export class Source extends BaseSource<Params> {
 
   override params(): Params {
     return {
-      bufnr: 0
-    }
+      bufnr: 0,
+    };
   }
 }
 
@@ -56,7 +58,7 @@ async function getOptions(denops: Denops, bufnr: number) {
       word: item,
       action: {
         value: value,
-        type: "option"
+        type: "option",
       },
     });
   }
