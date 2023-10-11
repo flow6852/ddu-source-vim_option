@@ -3,8 +3,9 @@ import {
   Context,
   Item,
   SourceOptions,
-} from "https://deno.land/x/ddu_vim@v3.4.3/types.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.4.3/deps.ts";
+} from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.6.0/deps.ts";
+import { assert, is } from "https://deno.land/x/unknownutil@v3.6.0/mod.ts";
 
 // type Params = Record<never, never>;
 type Params = {
@@ -43,12 +44,14 @@ export class Source extends BaseSource<Params> {
 
 async function getOptions(denops: Denops, bufnr: number) {
   const items: Item[] = [];
-  for (
-    const item of await fn.getcompletion(
+  const optionItems = await fn.getcompletion(
       denops,
       "",
       "option",
-    ) as Array<string>
+    )
+    assert(optionItems, is.ArrayOf(is.String))
+  for (
+    const item of optionItems
   ) {
     if (item == "all") continue;
     const value = await fn.getbufvar(
